@@ -131,8 +131,8 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
 var Players = { 
   "humanPlayer":function( ticks ){ return false }, 
   "randomPlayer":function( ticks ){ if(ticks % 79 == 0) return Math.random(ticks) < 0.3; },
-  "periodicPlayer":function( ticks ){ return ticks % 200 == 0; },
-  "impatientAttacker":function( ticks ){ if( ticks % 79 == 0) return true }
+  "periodicPlayer":function( ticks ){ return ticks % 79 == 0; },
+  "impatientAttacker":function( ticks ){ if( control == "X") return true }
   };
 
 
