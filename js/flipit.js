@@ -132,7 +132,7 @@ var Players = {
   "humanPlayer":function( ticks ){ return false }, 
   "randomPlayer":function( ticks ){ if(ticks % 79 == 0) return Math.random(ticks) < 0.3; },
   "periodicPlayer":function( ticks ){ return ticks % 200 == 0; },
-  "ImpatientAttacker":function( ticks ){ if(control == "Y" ) return true }
+  "impatientAttacker":function( ticks ){ if(control == "Y" ) return false }
   };
 
 
