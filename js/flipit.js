@@ -1,5 +1,5 @@
 /**
- * @author Ethan Heilman, henger li
+ * @author Ethan Heilman, Henger Li
  *
  **/
 
@@ -35,10 +35,12 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     this.flips = [];
 
     this.xScore = 0;
-    this.yScore = 0;
+	this.yScore = 0;
 	
 	this.markD = [0];
+	this.markA = [];
 	
+	this.result = "";
 
 
     renderer.drawBoard( 0, [] );
@@ -74,8 +76,13 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
   this.endGame = function() {
     clearInterval( this.clock );
     this.running = false;
-	alert(this.markD);
+	//alert(this.markD);
+	//alert(this.markA);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
+	this.result = this.markD.join();
+	alert(this.result);
+	
+	
   };
 
   /**
@@ -99,7 +106,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
 
     //if a human is playing a player function is set to neverMove()
     if( playerX( this.ticks ) ){ this.defenderFlip() }; //player x makes their move
-    if( playerY( this.ticks, this.markD ) ){ this.attackerFlip() }; //player y makes their move
+    if( playerY( this.ticks, this.markD, this.control ) ){ this.attackerFlip() }; //player y makes their move
     
     //only draw every fifth frame
     if ( this.ticks % 5 == 0 ) renderer.drawBoard( this.ticks, this.flips );
@@ -130,6 +137,8 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
       this.control = "Y";
 
       this.yScore -= yFlipCost;
+	  this.markA.push(this.ticks);
+	  
     }
   }
   
@@ -160,7 +169,7 @@ var Players = {
   "humanPlayer":function( ticks ){ return false }, 
   "randomPlayer":function( ticks ){ if(ticks % 79 == 0) return Math.random(ticks) < 0.3; },
   "periodicPlayer":function( ticks ){ return ticks % 200 == 0; },
-  "impatientAttacker":function( ticks, markD ) { var s = markD[markD.length-1]; if( ticks == s + Math.max(Math.round(getNumberInNormalDistribution(50,50)),1)) return true;}
+  "impatientAttacker":function( ticks, markD, control ) { var s = markD[markD.length-1]; if( ticks == s + Math.max(Math.round(getNumberInNormalDistribution(50,25)),1) && control == "X") return true;}
   };
 
 
