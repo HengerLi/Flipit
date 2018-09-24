@@ -1,5 +1,5 @@
 /**
- * @author Henger Li
+ * @author Ethan Heilman 
  *
  **/
 
@@ -36,6 +36,9 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
 
     this.xScore = 0;
     this.yScore = 0;
+	
+	this.markD = [0];
+	
 
 
     renderer.drawBoard( 0, [] );
@@ -55,7 +58,8 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     this.newGame();
 
     if (this.running == false ){
-      this.running = true;
+      alert(this.markD);
+	  this.running = true;
 
       renderer.newBoard();
 
@@ -70,7 +74,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
   this.endGame = function() {
     clearInterval( this.clock );
     this.running = false;
-
+	alert(this.markD);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
   };
 
@@ -95,7 +99,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
 
     //if a human is playing a player function is set to neverMove()
     if( playerX( this.ticks ) ){ this.defenderFlip() }; //player x makes their move
-    if( playerY( this.ticks ) ){ this.attackerFlip() }; //player y makes their move
+    if( playerY( this.ticks, this.markD ) ){ this.attackerFlip() }; //player y makes their move
     
     //only draw every fifth frame
     if ( this.ticks % 5 == 0 ) renderer.drawBoard( this.ticks, this.flips );
@@ -110,6 +114,10 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
       this.control = "X";
 
       this.xScore -= xFlipCost;
+	  
+	  this.markD.push(this.ticks);
+	  <!-- alert(this.markD); -->
+	  
     }
   };
 
@@ -124,15 +132,35 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
       this.yScore -= yFlipCost;
     }
   }
+  
 };
 
+function getNumberInNormalDistribution(mean,std_dev){
+    return mean+(randomNormalDistribution()*std_dev);
+}
+
+function randomNormalDistribution(){
+    var u=0.0, v=0.0, w=0.0, c=0.0;
+    do{
+        //获得两个（-1,1）的独立随机变量
+        u=Math.random()*2-1.0;
+        v=Math.random()*2-1.0;
+        w=u*u+v*v;
+    }while(w==0.0||w>=1.0)
+    //这里就是 Box-Muller转换
+    c=Math.sqrt((-2*Math.log(w))/w);
+    //返回2个标准正态分布的随机数，封装进一个数组返回
+    //当然，因为这个函数运行较快，也可以扔掉一个
+    //return [u*c,v*c];
+    return u*c;
+}
 
 // Computer players
 var Players = { 
   "humanPlayer":function( ticks ){ return false }, 
   "randomPlayer":function( ticks ){ if(ticks % 79 == 0) return Math.random(ticks) < 0.3; },
-  "periodicPlayer":function( ticks ){ return ticks % 100 == 0; },
-  "impatientAttacker":function( ticks ){ if( control == "X") return true }
+  "periodicPlayer":function( ticks ){ return ticks % 200 == 0; },
+  "impatientAttacker":function( ticks, markD ) { var s = markD[markD.length-1]; if( ticks == s + Math.max(Math.round(getNumberInNormalDistribution(50,50)),1)) return true;}
   };
 
 
