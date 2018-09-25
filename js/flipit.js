@@ -35,12 +35,12 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     this.flips = [];
 
     this.xScore = 0;
-	this.yScore = 0;
+    this.yScore = 0;
 	
-	this.markD = [0];
-	this.markA = [];
+    this.markD = [0];
+    this.markA = [];
 	
-	this.result = "";
+    this.result = 0;
 
 
     renderer.drawBoard( 0, [] );
@@ -60,7 +60,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     this.newGame();
 
     if (this.running == false ){
-      alert(this.markD);
+      //alert(this.markD);
 	  this.running = true;
 
       renderer.newBoard();
@@ -76,11 +76,11 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
   this.endGame = function() {
     clearInterval( this.clock );
     this.running = false;
+	this.result = this.markD.join();
 	//alert(this.markD);
 	//alert(this.markA);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
-	this.result = this.markD.join();
-	alert(this.result);
+	
 	
 	
   };
@@ -121,7 +121,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
       this.control = "X";
 
       this.xScore -= xFlipCost;
-	  
+	  this.result = this.ticks;
 	  this.markD.push(this.ticks);
 	  <!-- alert(this.markD); -->
 	  
