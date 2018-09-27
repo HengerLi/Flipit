@@ -166,7 +166,7 @@ function randomNormalDistribution(){
 
 // Computer players
 var Players = { 
-  "humanPlayer":function( ticks ){ return false }, 
+  "humanPlayer":function( ticks ){ return false; }, 
   "randomPlayer":function( ticks ){ if(ticks % 79 == 0) return Math.random(ticks) < 0.3; },
   "periodicPlayer":function( ticks ){ return ticks % 200 == 0; },
   "impatientAttacker":function( ticks, markD, control ) { var s = markD[markD.length-1]; return ticks == s + Math.max(Math.round(getNumberInNormalDistribution(50,25)),1) && control == "X";}
