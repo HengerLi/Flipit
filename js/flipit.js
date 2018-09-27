@@ -77,7 +77,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     clearInterval( this.clock );
     this.running = false;
 	this.result = this.markD.join();
-	alert(this.markD);
+	//alert(this.markD);
 	//alert(this.markA);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
 	
@@ -123,8 +123,8 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
       this.xScore -= xFlipCost;
 	  this.result = this.ticks;
 	  this.markD.push(this.ticks);
-	  <!-- alert(this.markD); -->
-	  
+	  //alert(this.markD);
+	 
     }
   };
 
@@ -169,7 +169,7 @@ var Players = {
   "humanPlayer":function( ticks ){ return false }, 
   "randomPlayer":function( ticks ){ if(ticks % 79 == 0) return Math.random(ticks) < 0.3; },
   "periodicPlayer":function( ticks ){ return ticks % 200 == 0; },
-  "impatientAttacker":function( ticks, markD, control ) { var s = markD[markD.length-1]; if( ticks == s + Math.max(Math.round(getNumberInNormalDistribution(50,25)),1) && control == "X") return true;}
+  "impatientAttacker":function( ticks, markD, control ) { var s = markD[markD.length-1]; return ticks == s + Math.max(Math.round(getNumberInNormalDistribution(50,25)),1) && control == "X";}
   };
 
 
