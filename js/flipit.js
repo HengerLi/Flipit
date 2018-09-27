@@ -77,7 +77,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     clearInterval( this.clock );
     this.running = false;
 	this.result = this.markD.join();
-	//alert(this.markD);
+	alert(this.markD);
 	//alert(this.markA);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
 	
