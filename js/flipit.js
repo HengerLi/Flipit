@@ -33,13 +33,14 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     this.ticks = 0;
     this.control = "X";
     this.flips = [];
-
+	
     this.xScore = 0;
-    this.yScore = 0;	
+    this.yScore = 0;
+	
     this.markD = [0];
     this.markA = [];
 	
-    this.result = 0;
+    this.results = "";
 
 
     renderer.drawBoard( 0, [] );
@@ -59,7 +60,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     this.newGame();
 
     if (this.running == false ){
-      alert(this.markD);
+	  //alert(this.markD);
 	  this.running = true;
 
       renderer.newBoard();
@@ -75,9 +76,9 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
   this.endGame = function() {
     clearInterval( this.clock );
     this.running = false;
-	this.result = this.markD.join();
+	this.results = this.markD.join();
 	alert(this.markD);
-	alert(this.markA);
+	//alert(this.markA);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
 	
 	
@@ -105,7 +106,8 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
 
     //if a human is playing a player function is set to neverMove()
     if( playerX( this.ticks ) ){ this.defenderFlip() }; //player x makes their move
-    if( playerY( this.ticks, this.markD, this.control ) ){ this.attackerFlip() }; //player y makes their move
+    if( playerY( this.ticks, this.markD, this.control ) ){ this.attackerFlip() };
+	//if( playerY( this.ticks ) ){ this.attackerFlip() };	//player y makes their move
     
     //only draw every fifth frame
     if ( this.ticks % 5 == 0 ) renderer.drawBoard( this.ticks, this.flips );
@@ -120,7 +122,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
       this.control = "X";
 
       this.xScore -= xFlipCost;
-	  this.result = this.ticks;
+	  //this.result = this.ticks;
 	  this.markD.push(this.ticks);
 	  //alert(this.markD);
 	 
@@ -136,7 +138,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
       this.control = "Y";
 
       this.yScore -= yFlipCost;
-	  this.markA.push(this.ticks);
+	  //this.markA.push(this.ticks);
 	  
     }
   }
