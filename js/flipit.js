@@ -35,8 +35,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     this.flips = [];
 
     this.xScore = 0;
-    this.yScore = 0;
-	
+    this.yScore = 0;	
     this.markD = [0];
     this.markA = [];
 	
