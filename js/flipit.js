@@ -60,7 +60,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     this.newGame();
 
     if (this.running == false ){
-      //alert(this.markD);
+      alert(this.markD);
 	  this.running = true;
 
       renderer.newBoard();
@@ -77,8 +77,8 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     clearInterval( this.clock );
     this.running = false;
 	this.result = this.markD.join();
-	//alert(this.markD);
-	//alert(this.markA);
+	alert(this.markD);
+	alert(this.markA);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
 	
 	
