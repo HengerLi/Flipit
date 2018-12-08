@@ -16,9 +16,9 @@
  *
  **/
 function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
+  
   var xControlBenefit = 1;
   var yControlBenefit = 1;
-
   var xFlipCost = 100;
   var yFlipCost = 100;
   
@@ -41,6 +41,9 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     //this.markA = [];
 	
     this.results = "";
+	this.last_state;
+	this.current_state = 0;
+	//this.last_control = "x";
 
 
     renderer.drawBoard( 0, [] );
@@ -116,12 +119,26 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
   /**
    * When the defender, player x, flips call this function. 
    **/
-  this.defenderFlip = function() {
-    if (this.running == true) {
-      this.flips[this.ticks] = "X";
-      this.control = "X";
-
-      this.xScore -= xFlipCost;
+  this.defenderFlip = function(dis, state) {
+    
+	
+	this.last_state = this.current_state;
+	this.current_state = state;
+	
+	if (this.running == true && this.current_state != this.last_state) {
+      
+	  //alert(this.last_state);
+	  //alert(this.current_state);
+      //if(this.current_state != this.last_state){
+		  
+	  this.flips[this.ticks] = "X";
+	  this.control = "X";
+		  //this.last_control = "x";
+	  //}
+	  //this.flips[this.ticks] = this.control;
+	  //alert(this.control);
+	  
+      this.xScore -= dis*xFlipCost;
 	  //this.result = this.ticks;
 	  this.markD.push(this.ticks);
 	  //alert(this.markD);
@@ -136,8 +153,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     if (this.running == true) {
       this.flips[this.ticks] = "Y";
       this.control = "Y";
-
-      this.yScore -= yFlipCost;
+	  //if(this.last_control == "X") this.yScore -= yFlipCost;
 	  //this.markA.push(this.ticks);
 	  
     }
@@ -152,17 +168,23 @@ function getNumberInNormalDistribution(mean,std_dev){
 function randomNormalDistribution(){
     var u=0.0, v=0.0, w=0.0, c=0.0;
     do{
-        //获得两个（-1,1）的独立随机变量
         u=Math.random()*2-1.0;
         v=Math.random()*2-1.0;
         w=u*u+v*v;
     }while(w==0.0||w>=1.0)
-    //这里就是 Box-Muller转换
+
     c=Math.sqrt((-2*Math.log(w))/w);
-    //返回2个标准正态分布的随机数，封装进一个数组返回
-    //当然，因为这个函数运行较快，也可以扔掉一个
     //return [u*c,v*c];
     return u*c;
+}
+function randomExponential(rate){
+  // Default to Math.random()
+  
+  var rE = -Math.log(Math.random())/rate;  
+  //alert(rE);
+ 
+
+  return rE;
 }
 
 // Computer players
@@ -170,7 +192,8 @@ var Players = {
   "humanPlayer":function( ticks ){ return false; }, 
   "randomPlayer":function( ticks ){ if(ticks % 79 == 0) return Math.random(ticks) < 0.3; },
   "periodicPlayer":function( ticks ){ return ticks % 200 == 0; },
-  "impatientAttacker":function( ticks, markD, control ) { var s = markD[markD.length-1]; return ticks == s + Math.max(Math.round(getNumberInNormalDistribution(50,25)),1) && control == "X";}
+  "impatientAttacker":function( ticks, markD, control ) { var s = markD[markD.length-1]; var t= s + Math.round(randomExponential(0.005)); if(control == "X") return ticks == t;}
+  //if(t-s >markD[length-1]-markD[length-2]) return false;
   };
 
 
