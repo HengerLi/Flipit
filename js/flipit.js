@@ -80,8 +80,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     clearInterval( this.clock );
     this.running = false;
 	this.results = this.markD.join();
-	//alert(this.markD);
-	//alert(this.markA);
+	alert('Your history moving time track：' + this.markD +'\n'+ 'You have been attacked at: '+ this.markA);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
 	
 	
