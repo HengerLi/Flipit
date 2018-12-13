@@ -38,7 +38,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     this.yScore = 0;
 	
     this.markD = [0];
-    //this.markA = [];
+    this.markA = [];
 	
     this.results = "";
 	this.last_state;
@@ -80,7 +80,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     clearInterval( this.clock );
     this.running = false;
 	this.results = this.markD.join();
-	alert(this.markD);
+	//alert(this.markD);
 	//alert(this.markA);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
 	
@@ -109,7 +109,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
 
     //if a human is playing a player function is set to neverMove()
     if( playerX( this.ticks ) ){ this.defenderFlip() }; //player x makes their move
-    if( playerY( this.ticks, this.markD, this.control ) ){ this.attackerFlip() };
+    if( playerY( this.ticks, this.markD, this.control, this.yScore, yFlipCost ) ){ this.attackerFlip() };
 	//if( playerY( this.ticks ) ){ this.attackerFlip() };	//player y makes their move
     
     //only draw every fifth frame
@@ -139,9 +139,10 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
 	  //alert(this.control);
 	  
       this.xScore -= dis*xFlipCost;
+	  this.yScore -= yFlipCost;
 	  //this.result = this.ticks;
 	  this.markD.push(this.ticks);
-	  //alert(this.markD);
+	  alert('Your history moving time track：' + this.markD +'\n'+ 'You have been attacked at: '+ this.markA);
 	 
     }
   };
@@ -153,8 +154,9 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     if (this.running == true) {
       this.flips[this.ticks] = "Y";
       this.control = "Y";
-	  //if(this.last_control == "X") this.yScore -= yFlipCost;
-	  //this.markA.push(this.ticks);
+	  //if(this.last_control == "X") 
+	  
+	  this.markA.push(this.ticks);
 	  
     }
   }
@@ -192,8 +194,16 @@ var Players = {
   "humanPlayer":function( ticks ){ return false; }, 
   "randomPlayer":function( ticks ){ if(ticks % 79 == 0) return Math.random(ticks) < 0.3; },
   "periodicPlayer":function( ticks ){ return ticks % 200 == 0; },
-  "impatientAttacker":function( ticks, markD, control ) { var s = markD[markD.length-1]; var t= s + Math.round(randomExponential(0.005)); if(control == "X") return ticks == t;}
-  //if(t-s >markD[length-1]-markD[length-2]) return false;
+  "impatientAttacker":function( ticks, markD, control)
+   { 
+	var s = markD[markD.length-1];
+	
+	var t= s + Math.round(randomExponential(0.005));
+	if(control == "X")
+	{
+		return ticks == t;
+	}
+   }
   };
 
 
