@@ -80,7 +80,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
     clearInterval( this.clock );
     this.running = false;
 	this.results = this.markD.join();
-	alert('Your history moving time track：' + this.markD +'\n'+ 'You have been attacked at: '+ this.markA);
+	//alert('Your history moving time track：' + this.markD +'\n'+ 'You have been attacked at: '+ this.markA);
     if ( scoreBoardFunct != null ) scoreBoardFunct( this.xScore, this.yScore );
 	
 	
@@ -141,7 +141,7 @@ function FlipItGame( renderer, playerX, playerY, scoreBoardFunct) {
 	  this.yScore -= yFlipCost;
 	  //this.result = this.ticks;
 	  this.markD.push(this.ticks);
-	  alert('Your history moving time track：' + this.markD +'\n'+ 'You have been attacked at: '+ this.markA);
+	  //alert('Your history moving time track：' + this.markD +'\n'+ 'You have been attacked at: '+ this.markA);
 	 
     }
   };
